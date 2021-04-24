@@ -11,8 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import fr.cjanienumerique.mobile.android.alifon.R;
+import fr.cjanienumerique.mobile.android.alifon.ui.MainActivity;
 
 
 /**
@@ -20,14 +24,16 @@ import fr.cjanienumerique.mobile.android.alifon.R;
  */
 public class PlaceholderFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_TITLE = "section_title";
 
     private PageViewModel pageViewModel;
 
-    public static PlaceholderFragment newInstance(int index) {
+    private RecyclerView recyclerView;
+
+    public static PlaceholderFragment newInstance(int titleId) { // int = id of externalized string
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(ARG_SECTION_NUMBER, index);
+        bundle.putInt(ARG_SECTION_TITLE, titleId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -35,12 +41,12 @@ public class PlaceholderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageViewModel = new ViewModelProvider(this).get(PageViewModel.class);
-        int index = 1;
+        pageViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getActivity().getApplication())).get(PageViewModel.class);
+        int titleId = R.string.words;
         if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
+            titleId = getArguments().getInt(ARG_SECTION_TITLE);
         }
-        pageViewModel.setIndex(index);
+        pageViewModel.setTitle(titleId);
     }
 
     @Override
@@ -49,12 +55,23 @@ public class PlaceholderFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView textView = root.findViewById(R.id.section_label);
-        pageViewModel.getText().observe(this, new Observer<String>() {
+
+        pageViewModel.getTitleText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
+        recyclerView = root.findViewById(R.id.recycler_view);
+        pageViewModel.getList().observe(PlaceholderFragment.this, new Observer<List>() {
+            @Override
+            public void onChanged(List list) {
+
+                recyclerView.setAdapter(new ListWordsRecyclerViewAdapter(list));
+            }
+        });
+
         return root;
     }
 }

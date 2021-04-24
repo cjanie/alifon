@@ -13,9 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import fr.cjanienumerique.mobile.android.alifon.ui.MainActivity;
-import fr.cjanienumerique.mobile.android.alifon.utils.AddViewAction;
-import fr.cjanienumerique.mobile.android.alifon.utils.DeleteViewAction;
-import fr.cjanienumerique.mobile.android.alifon.utils.RecyclerViewItemCountAssertion;
+
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -45,14 +43,9 @@ public class MainActivityTest {
     }
 
     @Test
-    public void wordsListShouldNotBeNull() {
-        onView(ViewMatchers.withId(R.id.list_words)).check(matches(notNullValue()));
+    public void listWordsShouldNotBeNull() {
+        onView(ViewMatchers.withId(R.id.recycler_view)).check(matches(notNullValue()));
     }
 
-    @Test
-    public void wordsListDeleteActionShouldRemoveItem() {
-        onView(ViewMatchers.withId(R.id.list_words)).perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
-        onView(ViewMatchers.withId(R.id.list_words)).check(RecyclerViewItemCountAssertion.withItemCount(itemsCount - 1));
-    }
     
 }

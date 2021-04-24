@@ -17,30 +17,30 @@ import fr.cjanienumerique.mobile.android.alifon.R;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
-    private final Context mContext;
+    private static final int[] TAB_TITLES_IDS = new int[]{R.string.words, R.string.roots};
+    private final Context context;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
-        super(fm);
-        mContext = context;
+        super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        this.context = context;
     }
 
     @Override
     public Fragment getItem(int position) {
+
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+        return PlaceholderFragment.newInstance(TAB_TITLES_IDS[position]);
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return mContext.getResources().getString(TAB_TITLES[position]);
+        return this.context.getResources().getString(TAB_TITLES_IDS[position]);
     }
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
-        return 2;
+        return TAB_TITLES_IDS.length;
     }
 }
