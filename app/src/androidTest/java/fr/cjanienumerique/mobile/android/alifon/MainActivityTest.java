@@ -44,7 +44,7 @@ public class MainActivityTest {
 
     @Test
     public void listWordsShouldNotBeNull() {
-        onView(ViewMatchers.withId(R.id.recycler_view)).check(matches(notNullValue()));
+        onView(ViewMatchers.withId(R.id.list_words)).check(matches(notNullValue()));
     }
 
     
