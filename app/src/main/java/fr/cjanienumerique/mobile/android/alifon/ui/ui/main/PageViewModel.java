@@ -1,6 +1,7 @@
 package fr.cjanienumerique.mobile.android.alifon.ui.ui.main;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -9,10 +10,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.cjanienumerique.mobile.android.alifon.R;
+import fr.cjanienumerique.mobile.android.alifon.entities.Root;
+import fr.cjanienumerique.mobile.android.alifon.entities.Word;
 
 public class PageViewModel extends AndroidViewModel {
 
@@ -25,18 +38,51 @@ public class PageViewModel extends AndroidViewModel {
         }
     });
 
-    private LiveData<List> list = Transformations.map(titleId, new Function<Integer, List>() {
-        @Override
-        public List apply(Integer input) {
-            List list = new ArrayList();
-            if(input == R.string.words) {
-                // TODO : list =
-            } else if(input == R.string.roots) {
-                // TODO: list =
-            }
-            return list;
-        }
-    });
+    private MutableLiveData<List> list;
+
+    public PageViewModel(@NonNull Application application) {
+        super(application);
+        this.list = new MutableLiveData<>();
+    }
+
+    private void loadList() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                "http://192.168.1.11:8081/rest/words",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<Word> words = new ArrayList<>();
+                        for(int i=0; i<response.length(); i++) {
+                            JSONObject wordAsJsonObject = response.optJSONObject(i);
+                            Word word = new Word();
+                            word.setId(wordAsJsonObject.optLong("id"));
+                            word.setTransliteration(wordAsJsonObject.optString("transliteration"));
+                            JSONObject rootAsJsonObject = wordAsJsonObject.optJSONObject("root");
+                            Root root = new Root();
+                            root.setId(rootAsJsonObject.optLong("id"));
+                            root.setRoot(rootAsJsonObject.optString("root"));
+                            word.setRoot(root);
+                            words.add(word);
+                        }
+                        System.out.println("Words: " + words);
+                        list.setValue(words);
+                        System.out.println("List: " + list.getValue());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplication().getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        Volley.newRequestQueue(getApplication().getApplicationContext()).add(jsonArrayRequest);
+    }
+
+
+
 
     private LiveData<Integer> listLayoutId = Transformations.map(titleId, new Function<Integer, Integer>() {
         @Override
@@ -51,9 +97,7 @@ public class PageViewModel extends AndroidViewModel {
         }
     });
 
-    public PageViewModel(@NonNull Application application) {
-        super(application);
-    }
+
 
     public void setTitle(int titleId) {
         this.titleId.setValue(titleId);
@@ -64,6 +108,7 @@ public class PageViewModel extends AndroidViewModel {
     }
 
     public LiveData<List> getList() {
+        this.loadList();
         return this.list;
     }
 

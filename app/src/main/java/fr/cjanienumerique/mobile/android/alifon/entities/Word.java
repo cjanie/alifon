@@ -5,11 +5,21 @@ import java.util.List;
 
 public class Word {
 
+    private Long id;
     private String transliteration;
     private List<String> translations;
+    private Root root;
 
     public Word() {
         this.translations = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTransliteration() {
@@ -35,5 +45,13 @@ public class Word {
         }
         translationsAsString = translationsAsString.substring(0, translationsAsString.length() - 2);
         return translationsAsString;
+    }
+
+    public Root getRoot() {
+        return root;
+    }
+
+    public void setRoot(Root root) {
+        this.root = root;
     }
 }
