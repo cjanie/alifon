@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import fr.cjanienumerique.mobile.android.alifon.ui.MainActivity;
+import fr.cjanienumerique.mobile.android.alifon.ui.ui.main.ListWordsFragment;
 
 
 import static androidx.test.espresso.Espresso.onView;
@@ -44,7 +45,7 @@ public class MainActivityTest {
 
     @Test
     public void listWordsShouldNotBeNull() {
-        onView(ViewMatchers.withId(R.id.list_words)).check(matches(notNullValue()));
+        onView(ViewMatchers.withId(R.id.word_transliteration)).check(matches(notNullValue()));
     }
 
     

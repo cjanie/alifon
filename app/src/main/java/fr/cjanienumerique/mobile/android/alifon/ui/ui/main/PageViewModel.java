@@ -66,9 +66,8 @@ public class PageViewModel extends AndroidViewModel {
                             word.setRoot(root);
                             words.add(word);
                         }
-                        System.out.println("Words: " + words);
                         list.setValue(words);
-                        System.out.println("List: " + list.getValue());
+
                     }
                 },
                 new Response.ErrorListener() {

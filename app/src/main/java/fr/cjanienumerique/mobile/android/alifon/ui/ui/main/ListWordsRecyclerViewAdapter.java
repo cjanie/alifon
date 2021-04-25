@@ -44,14 +44,16 @@ public class ListWordsRecyclerViewAdapter extends RecyclerView.Adapter<ListWords
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.word_transliteration)
+       // @BindView(R.id.word_transliteration)
         public TextView transliteration;
-        @BindView(R.id.word_translations)
+        //@BindView(R.id.word_translations)
         public TextView translations;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            //ButterKnife.bind(this, itemView);
+            this.transliteration = itemView.findViewById(R.id.word_transliteration);
+            this.translations = itemView.findViewById(R.id.word_translations);
         }
     }
 }

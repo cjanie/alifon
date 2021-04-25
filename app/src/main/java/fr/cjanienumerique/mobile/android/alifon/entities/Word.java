@@ -40,10 +40,12 @@ public class Word {
 
     public String getTranslationsAsString() {
         String translationsAsString = "";
-        for(int i=0; i<this.translations.size(); i++) {
-            translationsAsString += this.translations.get(i) + ", ";
+        if(!this.translations.isEmpty()) {
+            for(int i=0; i<this.translations.size(); i++) {
+                translationsAsString += this.translations.get(i) + ", ";
+            }
+            translationsAsString = translationsAsString.substring(0, translationsAsString.length() - 2);
         }
-        translationsAsString = translationsAsString.substring(0, translationsAsString.length() - 2);
         return translationsAsString;
     }
 

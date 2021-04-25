@@ -14,6 +14,7 @@ public class WordTests {
         Word wordXAa = new Word();
         wordXAa.setTransliteration("XAa");
         List<String> translations = new ArrayList<>();
+        assert (wordXAa.getTranslationsAsString().equals(""));
         translations.add("to throw");
         wordXAa.setTranslations(translations);
         assert(wordXAa.getTranslationsAsString().equals("to throw"));

@@ -37,7 +37,7 @@ public class PlaceholderFragment extends Fragment {
 
     private PageViewModel pageViewModel;
 
-    private RecyclerView recyclerView;
+
 
     public static PlaceholderFragment newInstance(int titleId) { // int = id of externalized string
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -71,17 +71,6 @@ public class PlaceholderFragment extends Fragment {
                 textView.setText(s);
             }
         });
-
-        recyclerView = root.findViewById(R.id.recycler_view);
-
-        pageViewModel.getList().observe(PlaceholderFragment.this, new Observer<List>() {
-            @Override
-            public void onChanged(List list) {
-
-                recyclerView.setAdapter(new ListWordsRecyclerViewAdapter(list));
-            }
-        });
-
 
         return root;
     }
